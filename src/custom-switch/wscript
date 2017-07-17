@@ -1,0 +1,32 @@
+# -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+# def options(opt):
+#     pass
+
+# def configure(conf):
+#     conf.check_nonfatal(header_name='stdint.h', define_name='HAVE_STDINT_H')
+
+def build(bld):
+    module = bld.create_ns3_module('custom-switch', ['core'])
+    module.source = [
+        'model/custom-switch.cc',
+        'helper/custom-switch-helper.cc',
+        ]
+
+    module_test = bld.create_ns3_module_test_library('custom-switch')
+    module_test.source = [
+        'test/custom-switch-test-suite.cc',
+        ]
+
+    headers = bld(features='ns3header')
+    headers.module = 'custom-switch'
+    headers.source = [
+        'model/custom-switch.h',
+        'helper/custom-switch-helper.h',
+        ]
+
+    if bld.env.ENABLE_EXAMPLES:
+        bld.recurse('examples')
+
+    # bld.ns3_python_bindings()
+
