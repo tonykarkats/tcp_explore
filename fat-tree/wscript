@@ -1,0 +1,13 @@
+## -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+import ns3waf
+
+def configure(conf):
+    ns3waf.check_modules(conf, ['core', 'utils-switches', 'internet', 'point-to-point', 'ecmp', 'csma', 'custom-switches', 'traffic-simulation', 'applications', 'netanim'], mandatory = True)
+
+def build(bld):
+    bld.build_a_script('dce', needed = ['core', 'utils-switches', 'internet', 'dce', 'point-to-point', 'ecmp', 'csma', 'custom-switches', 'traffic-simulation', 'applications', 'netanim'],
+				  target='bin/dce-fat-tree',
+				  source=['fat-tree.cc', 'misc-tools.cc']
+				  )
+
