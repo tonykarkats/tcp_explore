@@ -1,0 +1,5 @@
+This repository holds all the necessary source code and scripts for the Master Thesis.
+
+This is not a standalone system, but rather all the pieces of code that I implemented on top of NS-3 and DCE.
+
+Detailed instructions on how to setup the system can be found in Appendix C.
