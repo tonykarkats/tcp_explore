@@ -1,0 +1,55 @@
+{
+    "errors": {
+        "iperfs not ended": 0
+    }, 
+    "params": {
+        "dctcpEnable": 1, 
+        "dctcpG": 5, 
+        "ecnThresh": 33, 
+        "flowletGap": 55, 
+        "tcpAbortOnOverflow": 0, 
+        "tcpDsack": 0, 
+        "tcpEarlyRetrans": 4, 
+        "tcpFack": 0, 
+        "tcpFinTimeout": 4, 
+        "tcpFrto": 1, 
+        "tcpInitCwnd": 3, 
+        "tcpLowLatency": 0, 
+        "tcpMinRto": 730118, 
+        "tcpNoMetricsSave": 1, 
+        "tcpRcvBufSize": 402507, 
+        "tcpReTxThreshold": 4, 
+        "tcpReordering": 2, 
+        "tcpRetries1": 4, 
+        "tcpSack": 0, 
+        "tcpSlowStartAfterIdle": 0, 
+        "tcpSndBufSize": 299899, 
+        "tcpTcpNoDelay": 0, 
+        "tcpTimestamp": 0, 
+        "tcpTwReuse": 1, 
+        "tcpWindowScaling": 0
+    }, 
+    "results": {
+        "averageFCT": "0.00142980589023 sec", 
+        "averageTPS": "2848.92088353 Mbits/sec", 
+        "medianFCT": "0.00035 sec", 
+        "numFlows": 747, 
+        "packetsDropped": 0, 
+        "packetsReceived": 654359, 
+        "simTime": 116.25440192222595
+    }, 
+    "setup": {
+        "dataRate": "1000Mbps", 
+        "delay": 50, 
+        "distrFile": "distributions/custom.txt", 
+        "expId": 684, 
+        "expType": "cdf", 
+        "flowSize": 128000, 
+        "flowsPerSec": 100, 
+        "k": 8, 
+        "probSameEdge": 0.2, 
+        "probSamePod": 0.3, 
+        "queueSize": 200, 
+        "simTime": 15
+    }
+}

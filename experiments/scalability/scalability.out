@@ -1,0 +1,30 @@
+This is a scalability test of our experimental setup:
+
+1. Incast Scenario - Fat Tree size
+==================================
+
+k	#Hosts	Simulation Time (sec)
+--------------------------------
+2			0.156
+3			0.857
+4			2.398
+5			3.045
+6			11.505
+7			16.253
+8			60.285	
+9			90.568
+10			-
+
+
+2. Scalability with flow size
+=============================
+
+Time to run 1 flow.
+
+Flow Size	Simulation Time (sec)
+---------------------------------
+100 KB		1.677
+1 MB		2.090
+10 MB		5.701
+100	MB		45.061
+1 GB		425.250

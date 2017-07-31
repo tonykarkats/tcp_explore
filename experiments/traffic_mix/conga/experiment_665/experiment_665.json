@@ -1,0 +1,55 @@
+{
+    "errors": {
+        "iperfs not ended": 0
+    }, 
+    "params": {
+        "dctcpEnable": 1, 
+        "dctcpG": 2, 
+        "ecnThresh": 27, 
+        "flowletGap": 42, 
+        "tcpAbortOnOverflow": 0, 
+        "tcpDsack": 1, 
+        "tcpEarlyRetrans": 1, 
+        "tcpFack": 0, 
+        "tcpFinTimeout": 9, 
+        "tcpFrto": 0, 
+        "tcpInitCwnd": 3, 
+        "tcpLowLatency": 0, 
+        "tcpMinRto": 232860, 
+        "tcpNoMetricsSave": 0, 
+        "tcpRcvBufSize": 178711, 
+        "tcpReTxThreshold": 5, 
+        "tcpReordering": 5, 
+        "tcpRetries1": 9, 
+        "tcpSack": 0, 
+        "tcpSlowStartAfterIdle": 0, 
+        "tcpSndBufSize": 646110, 
+        "tcpTcpNoDelay": 0, 
+        "tcpTimestamp": 0, 
+        "tcpTwReuse": 1, 
+        "tcpWindowScaling": 0
+    }, 
+    "results": {
+        "averageFCT": "0.00309591834003 sec", 
+        "averageTPS": "2865.99196787 Mbits/sec", 
+        "medianFCT": "0.00035 sec", 
+        "numFlows": 747, 
+        "packetsDropped": 0, 
+        "packetsReceived": 1218441, 
+        "simTime": 149.55798888206482
+    }, 
+    "setup": {
+        "dataRate": "1000Mbps", 
+        "delay": 50, 
+        "distrFile": "distributions/conga.txt", 
+        "expId": 665, 
+        "expType": "cdf", 
+        "flowSize": 128000, 
+        "flowsPerSec": 100, 
+        "k": 8, 
+        "probSameEdge": 0.2, 
+        "probSamePod": 0.3, 
+        "queueSize": 200, 
+        "simTime": 15
+    }
+}

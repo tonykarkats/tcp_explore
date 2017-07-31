@@ -1,0 +1,4 @@
+In these experiments we are trying to find out which parameters	have the biggest impact on performance.
+For this, we take the optimal set of parameters of the exploration algorithm and vary only the ones that we believe are the most important.
+We measure the variation of the results due to the change of this parameter.
+

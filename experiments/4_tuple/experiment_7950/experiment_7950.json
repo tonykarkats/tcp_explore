@@ -1,0 +1,58 @@
+{
+    "errors": {
+        "iperfs not ended": 78
+    }, 
+    "params": {
+        "dctcpEnable": 1, 
+        "dctcpG": 4, 
+        "ecnThresh": 1, 
+        "flowletGap": 64, 
+        "tcpAbortOnOverflow": 1, 
+        "tcpDsack": 1, 
+        "tcpEarlyRetrans": 2, 
+        "tcpFack": 1, 
+        "tcpFinTimeout": 30, 
+        "tcpFrto": 1, 
+        "tcpInitCwnd": 2, 
+        "tcpLowLatency": 0, 
+        "tcpMinRto": 1000000, 
+        "tcpNoMetricsSave": 1, 
+        "tcpRcvBufSize": 256000, 
+        "tcpReTxThreshold": 3, 
+        "tcpReordering": 3, 
+        "tcpRetries1": 3, 
+        "tcpSack": 1, 
+        "tcpSlowStartAfterIdle": 0, 
+        "tcpSndBufSize": 256000, 
+        "tcpTcpNoDelay": 1, 
+        "tcpTimestamp": 1, 
+        "tcpTwReuse": 1, 
+        "tcpWindowScaling": 1
+    }, 
+    "results": {
+        "averageFCT": "0.381617918367 sec", 
+        "averageTPS": "1469.67020408 Mbits/sec", 
+        "medianFCT": "0.409773 sec", 
+        "numFlows": 49, 
+        "p75": "0.613049 sec", 
+        "p95": "1.0220396 sec", 
+        "p99": "1.02303592 sec", 
+        "packetsDropped": 531, 
+        "packetsReceived": 26338, 
+        "simTime": 55.408408880233765
+    }, 
+    "setup": {
+        "dataRate": "1000Mbps", 
+        "delay": 50, 
+        "distrFile": "distributions/custom.txt", 
+        "expId": 7950, 
+        "expType": "incast", 
+        "flowSize": 128000, 
+        "flowsPerSec": 100, 
+        "k": 8, 
+        "probSameEdge": 0.2, 
+        "probSamePod": 0.3, 
+        "queueSize": 5, 
+        "simTime": 20
+    }
+}

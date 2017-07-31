@@ -1,0 +1,5 @@
+In these experiments we are going to see the interaction between the flowlet gap and the DCTCP g
+parameter.
+We are running full range experiments for these 2 parameters.
+
+We are simulating bursty and non-bursty traffic, as we expect to see different setups with different workload types.

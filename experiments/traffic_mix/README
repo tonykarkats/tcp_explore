@@ -1,0 +1,7 @@
+Traffic Mix Experiments
+-----------------------
+
+In these experiments we are evaluating whether different traffic mixes yield different
+sets of optimal parameters.
+
+Generate 100 random experiments and run them for 3 different traffic mixes. Then map them all into the same graph.
