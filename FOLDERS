@@ -1,0 +1,37 @@
+This is a description of all the files and folders inside the top directory:
+
+[distributions] : This folder contains the files of the flow size distributions. If you want to add a new one, create a file and stick to the formatting of the rest.
+
+[experiments] : This folder contains all the experimental results of the sections mentioned in the report, along with scripts to produce the respective plots.
+
+./experiment_generator.py : This script generates batches of experiments in a format that can be run later.
+
+./anneal_robust.py : Runs the robust simulated annealing algorithm for parameter exploration (Read the comments inside the file for more information.)
+
+
+CREATING AND RUNNING EXPERIMENTS
+================================
+Below we define the whole procedure in order to run a series of experiments:
+	- Generate the batch of experiments using
+		 ./experiment_generator.py --gentype=<experiment type> --output_folder=<output_folder>.
+ 	  The use of the script is well documented in the comments, but what you have to do is: first specify the setup of the network and the traffic characteristics (setup dictionary) and run one of the experiments available:
+		* random: Sample each parameter value uniformly at random from the ranges specified in the "param_ranges" dict-					 ionary.
+		* flowlet_dctcp : Generate the Flowlet gap - DCTCP g experiments (Section 5.2)
+		* single : Generate a single experiments based on the values defined in the "params_single" dictionary.
+		* 4_tuple : Generate experiments for Section 5.3 (Interaction between g,K,Q and Flowlet gap)
+
+	  You can also create your own experiments.
+	  The experiment generator outputs a number of pickle files to the output folder specified.
+
+	- Run the batch of the experiments using:
+		./run_experiments.py <folder>
+		(Make sure that the script is in the same folder as the ./waf executable.)
+
+		This script will run the experiments and for each one will create a folder with the results.
+		Each folder contains 3 files:
+			* A JSON file containing the results of the experiment.
+			* A file containing statistics about the flows run (Flow completion time and througphput)
+			* A file containing statistics about the queues of the switches (packets received / packets dropped)
+==================================
+
+		
