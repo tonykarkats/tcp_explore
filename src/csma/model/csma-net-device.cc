@@ -968,8 +968,6 @@ bool
 CsmaNetDevice::SendFrom (Ptr<Packet> packet, const Address& src, const Address& dest, uint16_t protocolNumber)
 {
 
-  //if (protocolNumber != 0x800) 
- 	 //std::cout << "PROTO # = " << std::hex << protocolNumber << std::dec << "\n"; 
   NS_LOG_FUNCTION (packet << src << dest << protocolNumber);
   NS_LOG_LOGIC ("packet =" << packet);
   NS_LOG_LOGIC ("UID is " << packet->GetUid () << ")");
@@ -986,28 +984,23 @@ CsmaNetDevice::SendFrom (Ptr<Packet> packet, const Address& src, const Address& 
       return false;
     }
 
-
  
   Ptr<Packet> packetCopy = packet->Copy();
  
-  // If queue size > K, mark packet with ECN
+  // Packet is marked with ECN at the switch, only if all the following are true:
+  // - The number of packets in the queue exceeds the ECN marking threshold K.
+  // - The payload protocol of the packet is IP.
+  // - The TCP segment is not an ACK.
+  // - ECN is enabled at the switches.
+
   if (protocolNumber == 2048 && packetCopy->GetSize() > 500 && m_queue->GetNPackets() >= m_ecnThresh && m_ecnThresh > 0) {
-   //if (packetCopy->GetSize() > 500) {
 	NS_LOG_INFO(this->GetNode()->GetId() << ": QUEUE SIZE = " << m_queue->GetNPackets() << " -->" << "Marking packet " << packet->GetUid() << " with CE\n");
     Ipv4Header ipHeader;
     packetCopy->RemoveHeader(ipHeader);
-	//if (!ipHeader.GetTos())
-   	//ipHeader.SetTos(0x03);
-	//if (ipHeader.GetPayloadSize)
 	ipHeader.SetEcn(Ipv4Header::ECN_CE);
 	ipHeader.EnableChecksum();
     packetCopy->AddHeader(ipHeader);
-	//ipHeader.Print(std::cout);
-	//std::cout << "\n";
-	
   }
-
-
 
   Mac48Address destination = Mac48Address::ConvertFrom (dest);
   Mac48Address source = Mac48Address::ConvertFrom (src);
@@ -1020,18 +1013,12 @@ CsmaNetDevice::SendFrom (Ptr<Packet> packet, const Address& src, const Address& 
   // Place the packet to be sent on the send queue.  Note that the 
   // queue may fire a drop trace, but we will too.
   //
-  //std::cout << "QUEUE SIZE = " << m_queue->GetNPackets() << "\n";
-	//if (protocolNumber == 2048)
-  //std::cout << this->GetNode()->GetId() << ": ENQUEUEING " << packet->GetUid() << "\n";
 
   if (m_queue->Enqueue (Create<QueueItem> (packetCopy)) == false)
     {
       m_macTxDropTrace (packetCopy);
       return false;
     }
-
-  //std::cout << this->GetNode()->GetId() << ": ENQUEUING PACKET: " << packetCopy->GetUid() << "\n";
-  //std::cout << "CURRENT QUEUE SIZE = " << m_queue->GetNPackets() << "\n";
 
   //
   // If the device is idle, we need to start a transmission. Otherwise,
@@ -1045,7 +1032,6 @@ CsmaNetDevice::SendFrom (Ptr<Packet> packet, const Address& src, const Address& 
           Ptr<QueueItem> item = m_queue->Dequeue ();
           NS_ASSERT_MSG (item != 0, "CsmaNetDevice::SendFrom(): IsEmpty false but no Packet on queue?");
           m_currentPkt = item->GetPacket ();
-		  //std::cout << "DEQUED PACKET_IDLE: " << m_currentPkt->GetUid() <<" \n";
           m_promiscSnifferTrace (m_currentPkt);
           m_snifferTrace (m_currentPkt);
           TransmitStart ();

@@ -243,7 +243,6 @@ void
 EcmpNetDevice::EdgeReceiveFromDevice (Ptr<NetDevice> incomingPort, Ptr<const Packet> packet, uint16_t protocol,
                                     Address const &src, Address const &dst, PacketType packetType)
 {
-//std::cout << "EDGE PROTOCOL = " << std::hex << "0x" << protocol << "\n";
   NS_LOG_FUNCTION_NOARGS ();
   NS_LOG_DEBUG ("UID is " << packet->GetUid ());
 
@@ -258,8 +257,6 @@ EcmpNetDevice::EdgeReceiveFromDevice (Ptr<NetDevice> incomingPort, Ptr<const Pac
 
   packetCopy->RemoveHeader(header);
   packetCopy->RemoveHeader(tcpHeader);
-  //tcpHeader.Print(std::cout);
-
 
   Ipv4Address ipSrc = header.GetSource();
   Ipv4Address ipDst = header.GetDestination();
@@ -287,7 +284,6 @@ void
 EcmpNetDevice::AggReceiveFromDevice (Ptr<NetDevice> incomingPort, Ptr<const Packet> packet, uint16_t protocol,
                                     Address const &src, Address const &dst, PacketType packetType)
 {
-//std::cout << "AGG PROTOCOL = " << protocol << "\n";
   NS_LOG_FUNCTION_NOARGS ();
   NS_LOG_DEBUG ("UID is " << packet->GetUid ());
 
@@ -302,7 +298,6 @@ EcmpNetDevice::AggReceiveFromDevice (Ptr<NetDevice> incomingPort, Ptr<const Pack
 
   packetCopy->RemoveHeader(header);
   packetCopy->RemoveHeader(tcpHeader);
-  //tcpHeader.Print(std::cout);
 
   Ipv4Address ipSrc = header.GetSource();
   Ipv4Address ipDst = header.GetDestination();
@@ -330,7 +325,6 @@ void
 EcmpNetDevice::CoreReceiveFromDevice (Ptr<NetDevice> incomingPort, Ptr<const Packet> packet, uint16_t protocol,
                                     Address const &src, Address const &dst, PacketType packetType)
 {
-//std::cout << "CORE PROTOCOL = " << protocol << "\n";
   NS_LOG_FUNCTION_NOARGS ();
   NS_LOG_DEBUG ("UID is " << packet->GetUid ());
 
