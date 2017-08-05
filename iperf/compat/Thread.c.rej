@@ -1,0 +1,10 @@
+--- compat/Thread.c	Tue Nov 20 10:38:26 2012 +0100
++++ compat/Thread.c	Tue Nov 20 10:41:10 2012 +0100
+@@ -409,6 +409,7 @@
+     SwitchToThread( );
+ #endif
+ #endif
++    sleep (1);
+ }
+ 
+ #ifdef __cplusplus
