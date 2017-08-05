@@ -1,6 +1,5 @@
 #include "misc-tools.h"
 #include "ns3/constant-position-mobility-model.h"
-//#include "ns3/applications-module.h"
 #include "ns3/dce-module.h"
 #include "ns3/random-variable-stream.h"
 
@@ -16,7 +15,12 @@ void setPos (Ptr<Node> n, int x, int y, int z)
   loc->SetPosition (locVec2);
 }
 
+/* Runs the linux 'ip' command with the given arguments
 
+   @param node The node to run the command on.
+   @param at The simulator time at which to run the command.
+   @param str The arguments to the 'ip' command.
+ */
 void RunIp (Ptr<Node> node, Time at, std::string str)
 {
   NS_LOG_INFO(at << " :" << str << "\n");
@@ -30,6 +34,13 @@ void RunIp (Ptr<Node> node, Time at, std::string str)
   apps.Start (at);
 }
 
+/* Sets up the IP address of a host.
+
+   @param node The node to set the IP.
+   @param at The simulator time at which to set the IP.
+   @param name The name of the interface to set up.
+   @param address The address to set.
+*/
 void AddAddress (Ptr<Node> node, Time at, const char *name, const char *address)
 {
   std::ostringstream oss;
@@ -44,6 +55,14 @@ std::string Ipv4AddressToString (Ipv4Address ad)
   return oss.str ();
 }
 
+/* Starts an iperf flow for using DCE
+
+   @param from The source host.
+   @param to The destination host.
+   @param flowSize The flow size in bytes.
+   @param nodeToIpMac Map with IP-MAC bindings.
+   @param simTime The total simulation time.
+*/
 void StartFlow(Ptr<Node> from, Ptr<Node> to, Time at, uint32_t flowSize,
 			  std::map<Ptr<Node>, std::pair<std::string, std::string> > nodeToIpMac, int 			   simTime)
 {
@@ -65,9 +84,6 @@ void StartFlow(Ptr<Node> from, Ptr<Node> to, Time at, uint32_t flowSize,
   dce.ResetEnvironment();
   dce.AddArgument("-c");
   dce.AddArgument(ipTo);
-  //TODO: Fix granularity here
-  //dce.AddArgument("-i");
-  //dce.AddArgument("1");
   dce.AddArgument("-n");
   dce.AddArgument(std::to_string(flowSize));
   apps = dce.Install (from);
@@ -77,6 +93,16 @@ void StartFlow(Ptr<Node> from, Ptr<Node> to, Time at, uint32_t flowSize,
   return;
 
 }
+
+/* Generates flows with sizes drawn from a uniform distribution.
+   Flow arrival times are drawn from an exponential distibution.
+
+   @param flowsPerSec The flow interarrival rate fot the exponential distribution.
+   @param minFlowSize Minimum flow size.
+   @param maxFlowSize Maximum flow size.
+   @param variance Variance of the flow sizes.
+   @param simTime Total simulation time.
+*/
 
 std::vector<std::pair<double, uint32_t>> generateFlowsNormalDist(int flowsPerSec, uint32_t minFlowSize, uint32_t maxFlowSize, double variance, int simTime)
 {
@@ -103,7 +129,12 @@ std::vector<std::pair<double, uint32_t>> generateFlowsNormalDist(int flowsPerSec
 
 }
 
-//TODO
+/* Generates flows according to a Cumulative Distribution Function from a file.
+
+   @param flowsPerSec The flow interarrival rate for the exponential distribution.
+   @param distFile The file containing the CDF of the flow sizes.
+   @param simTime The total simulation time.
+*/
 std::vector<std::pair<double, uint32_t>> generateFlowsCdf(int flowsPerSec, std::string distFile, int simTime)
 {
 	std::vector<std::pair<double, uint32_t>> flows;
@@ -120,10 +151,6 @@ std::vector<std::pair<double, uint32_t>> generateFlowsCdf(int flowsPerSec, std::
 		cdf.push_back(std::pair<uint32_t,double>(size, prob));
 	}
 
-	//for (auto entry : cdf) {
-	//	std::cout << entry.first << " " << entry.second << "\n";
-	//}	
-	
 	std::uniform_real_distribution<double> uniformDistribution(0.0, 1.0);
 	double time = CLIENTS_START_TIME + 0.5;
 	while (time < simTime - 5.0) {
@@ -145,6 +172,13 @@ std::vector<std::pair<double, uint32_t>> generateFlowsCdf(int flowsPerSec, std::
 }
 
 
+/* Create source-destination pairs of hosts in a uniformly at random fashion.
+
+   @param sameEdgeProb Probability that source and destination are on the same edge switch.
+   @param samePodProb Probability that source and destination are on the same pod.
+   @param k The fat-tree's k parameter.
+   @param seed_factor Seed factor for calculating the seed for the RNG.
+*/
 std::tuple<int, int, int, int, int, int> getSourceDestPairs(double sameEdgeProb, double samePodProb, int k, int seed_factor) {
 
 	int num_pod = k;
@@ -163,14 +197,13 @@ std::tuple<int, int, int, int, int, int> getSourceDestPairs(double sameEdgeProb,
 	src_host = rndGen->GetInteger(0, k/2 - 1);
 
 	// The same seed is used for the same generated flows so that the experiments
-	// can be reproducable.	
+	// can be reproducible.	
 	rng.seed(42*seed_factor);
-	//TODO: Now choose the destination host based on the probabilities	
+	// Now choose the destination host based on the probabilities	
 	std::uniform_real_distribution<double> uniformDistribution(0.0,1.0);
 	double num = uniformDistribution(rng);
 	if (num < sameEdgeProb) {
 		// Same Edge
-		//NS_LOG_INFO("Same edge\n");
 		dst_pod = src_pod;
 		dst_edge = src_edge;
 		dst_host = rndGen->GetInteger(0, k/2-1);
@@ -179,7 +212,6 @@ std::tuple<int, int, int, int, int, int> getSourceDestPairs(double sameEdgeProb,
 	}
 	else if (num < sameEdgeProb + samePodProb) {
 		// Same Pod
-		//NS_LOG_INFO("Same pod\n");
 		dst_pod = src_pod;
 		dst_edge = rndGen->GetInteger(0, k/2-1);
 		while (dst_edge == src_edge)
@@ -188,10 +220,9 @@ std::tuple<int, int, int, int, int, int> getSourceDestPairs(double sameEdgeProb,
 	}
 	else {
 		// Different Pod
-		//NS_LOG_INFO("Different pod\n");
         dst_pod = rndGen->GetInteger(0, k-1);
         while (dst_pod == src_pod) {
-          dst_pod = rndGen->GetInteger(0, k-1);
+            dst_pod = rndGen->GetInteger(0, k-1);
         }
 
         dst_edge = rndGen->GetInteger(0, k/2-1);
@@ -202,7 +233,5 @@ std::tuple<int, int, int, int, int, int> getSourceDestPairs(double sameEdgeProb,
 	//		   << ") -> (" << dst_pod << ", " << dst_edge << ", " << dst_host << ")\n";
 	return std::tuple<int, int, int, int, int, int>(src_pod, src_edge, src_host, dst_pod, dst_edge, dst_host);
 }
-
-
 
 }
