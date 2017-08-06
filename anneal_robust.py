@@ -7,8 +7,6 @@ from random import random
 from experiment import *
 from math import exp, log, ceil
 
-#!/usr/bin/python
-
 import subprocess
 import glob
 import numpy as np
@@ -16,6 +14,8 @@ import os
 import pickle
 import json
 import time
+
+# The setup of the experiment, i.e. parts that remain mostly static.
 
 setup = { "k" 			 : 8,
 		  "simTime" 	 : 15,
@@ -30,7 +30,7 @@ setup = { "k" 			 : 8,
 		  "distrFile"	 : "distributions/conga.txt"
 }
 
-# This dictionary specifies the parameter properties for the exploration
+# This dictionary specifies the parameter properties for the random exploration.
 # Each key(parameter) maps to a list of the form [<start_value>, <low_value>, <high_value>, <step>]
 
 param_properties = {
@@ -61,22 +61,20 @@ param_properties = {
 		"tcpInitCwnd"				   : [2, 1, 10, 1]
 }
 
-# Seeds for the random experiments
-# All the seeds have to be the same across experiments so that the comparison is fair
+# Seeds for the random experiments.
+# All the seeds have to be the same across experiments so that the comparison is fair.
 seeds = []
 for i in range(0, 5):
 	seeds.append(int(4200*random()))
 
+# Parses the stdout of iperf and returns the throughput and flow completion time.
 
 def parse_iperf_client_file(filename):
 	with open(filename, "r") as infile:
-		#print("Opening {}".format(filename))
 		lines = infile.readlines()
 		if (len(lines) == 0):
 			return -1.0, -1.0
 		if (lines[1].startswith("Client")):
-			#print(filename)
-			#print(lines[-1])
 			try:
 				fct = float(lines[-1].split()[2].split("-")[1])
 			except:
@@ -86,7 +84,6 @@ def parse_iperf_client_file(filename):
 				tps /= 1000.0
 			elif lines[-1].split()[7] == 'Gbits/sec':
 				tps *= 1000.0
-			#print("{}".format(fct))
 			return fct, tps
 		else:
 			return -1.0, -1.0
@@ -145,7 +142,6 @@ def run_experiment(setup, params):
 
 	errors['iperfs not ended'] = iperfs_not_ended - (setup['k']**3) / 4
 	
-	#print(fct_list)
 	results = {}
 	results['simTime'] = elapsed
 	results['numFlows'] = len(fct_list)
@@ -158,9 +154,6 @@ def run_experiment(setup, params):
   
 	# Return the results
 	return results
-
-##############################################################################
-
 
 # Runs an experiment and calculates the objective function for a given
 # set of parameters.
@@ -194,7 +187,6 @@ def neighbor(params):
 		high_limit = param_props[2]
 		step = param_props[3]
 		rand = random()
-		# TODO: Add limits?
 		if rand < 1.0/3.0:
 			# Move up
 			new_params[param] = value + step if value + step <= high_limit else value 
@@ -205,8 +197,6 @@ def neighbor(params):
 			# Don't move
 			new_params[param] = value
 	return new_params
-
-	
 
 def anneal(params):
 	outfile = open("anneal.out", "wb")
@@ -243,6 +233,9 @@ def anneal(params):
 	json.dump(params, outfile)
 	outfile.close()
 	return params, old_cost
+
+# Use this function in case the program crashes.
+# This function restores the exploration process from the last checkpoint.
 
 def anneal_continue():
 	outfile = open("anneal.out", "a")
@@ -283,12 +276,11 @@ def anneal_continue():
 	return params, old_cost
 	
 		
-
 if __name__ == '__main__':
 	print("Generating starting parameters according to expert values..")
 	starting_params = {}
 	for param, props in param_properties.iteritems():
 		starting_params[param] = props[0]
 
-	#anneal(starting_params)
-	anneal_continue()
+	anneal(starting_params)
+	#anneal_continue()
