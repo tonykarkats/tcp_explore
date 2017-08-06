@@ -68,7 +68,7 @@ main(int argc, char *argv[])
   double probSamePod = 0.3;
   double probSameEdge = 0.2;
   double flowsPerSec = 30;
-  uint32_t flowSize = 128000;   // This is for experiments with fixed flow size (e.g incast)
+  uint32_t flowSize = 128000;        // For experiments with fixed flow size.
   string distrFile = "";
   
   uint32_t tcpSndBufSize                = 131072;
@@ -156,16 +156,16 @@ main(int argc, char *argv[])
   
   cmd.Parse (argc,argv);
 
-  int num_pod = k;			// Number of pods
-  int num_host = (k/2);		// Number of hosts under a switch
-  int num_edge = (k/2);		// Number of edge switches in a pod
+  int num_pod = k;				// Number of pods
+  int num_host = (k/2);			// Number of hosts under a switch
+  int num_edge = (k/2);			// Number of edge switches in a pod
   int num_bridge = num_edge;	// Number of bridges in a pod
-  int num_agg = (k/2);		// Number of aggregation switches in a pod
-  int num_group = k/2;		// Number of groups of core switches
-  int num_core = (k/2);		// Number of core switches in a group
-  int total_host = k*k*k/4;	// Number of hosts in the entire network
+  int num_agg = (k/2);			// Number of aggregation switches in a pod
+  int num_group = k/2;			// Number of groups of core switches
+  int num_core = (k/2);			// Number of core switches in a group
+  int total_host = k*k*k/4;		// Number of hosts in the entire network
 
-  // Initialize other variables
+  // Initialize counters
   int i = 0;
   int j = 0;
   int h = 0;
@@ -177,16 +177,16 @@ main(int argc, char *argv[])
   Ipv4Mask coreMask = Ipv4Mask("255.255.0.0");
 
   // Output some useful information
-//  std::cout << "Value of k =  " << k<< "\n";
-//  std::cout << "Total number of hosts =  " << total_host << "\n";
-//  std::cout << "Type of experiment = " << expType << "\n";
-//  std::cout << "Size of queues in switches = " << queueSize << "\n";
-//  if (ecnThresh > 0)
-//  	std::cout << "Threshold of ECN marking = " << ecnThresh << "\n";
-//  else
-//  	std::cout << "ECN Disabled!\n";
-//  std::cout << "Distribution (if used) is " << distrFile << "\n";
-//  std::cout << "Total Simulation Time is " << TOTAL_SIMULATION_TIME << "\n";
+  //  std::cout << "Value of k =  " << k<< "\n";
+  //  std::cout << "Total number of hosts =  " << total_host << "\n";
+  //  std::cout << "Type of experiment = " << expType << "\n";
+  //  std::cout << "Size of queues in switches = " << queueSize << "\n";
+  //  if (ecnThresh > 0)
+  //  	std::cout << "Threshold of ECN marking = " << ecnThresh << "\n";
+  //  else
+  //  	std::cout << "ECN Disabled!\n";
+  //  std::cout << "Distribution (if used) is " << distrFile << "\n";
+  //  std::cout << "Total Simulation Time is " << TOTAL_SIMULATION_TIME << "\n";
   
   // Configure Switches
   Config::SetDefault ("ns3::Queue::MaxPackets", UintegerValue(uint32_t(queueSize)));
@@ -238,7 +238,7 @@ main(int argc, char *argv[])
   	  stack.SysctlSet (host[i][j], ".net.ipv6.conf.all.disable_ipv6", "1");
       stack.SysctlSet (host[i][j], ".net.ipv4.congestion_control", "reno");
 
-      // DCTCP Params
+      // DCTCP Parameters
       if (dctcpEnable == "1") {
         stack.SysctlSet (host[i][j], ".net.ipv4.tcp_dctcp_enable", "1"); 
         stack.SysctlSet (host[i][j], ".net.ipv4.tcp_ecn", "1");
@@ -289,18 +289,18 @@ main(int argc, char *argv[])
   }
 
   // Print out the TCP settings for the hosts
-//  std::cout << " TCP Settings on the hosts\n";
-//  std::cout << " -------------------------\n";
-//  LinuxStackHelper::SysctlGet(host[0][0].Get(0), Seconds (0.1),
-//  ".net.ipv4.tcp_wmem", &printSysctl);
-//  LinuxStackHelper::SysctlGet(host[0][0].Get(0), Seconds (0.1),
-//  ".net.ipv4.tcp_rmem", &printSysctl);
-//  LinuxStackHelper::SysctlGet(host[0][0].Get(0), Seconds (0.1),
-//  ".net.ipv4.tcp_frto", &printSysctl);
-//  LinuxStackHelper::SysctlGet(host[0][0].Get(0), Seconds (0.1),
-//  ".net.core.rmem_max", &printSysctl);
-//  LinuxStackHelper::SysctlGet(host[0][0].Get(0), Seconds (0.1),
-//  ".net.ipv4.tcp_moderate_rcvbuf", &printSysctl);
+  //  std::cout << " TCP Settings on the hosts\n";
+  //  std::cout << " -------------------------\n";
+  //  LinuxStackHelper::SysctlGet(host[0][0].Get(0), Seconds (0.1),
+  //  ".net.ipv4.tcp_wmem", &printSysctl);
+  //  LinuxStackHelper::SysctlGet(host[0][0].Get(0), Seconds (0.1),
+  //  ".net.ipv4.tcp_rmem", &printSysctl);
+  //  LinuxStackHelper::SysctlGet(host[0][0].Get(0), Seconds (0.1),
+  //  ".net.ipv4.tcp_frto", &printSysctl);
+  //  LinuxStackHelper::SysctlGet(host[0][0].Get(0), Seconds (0.1),
+  //  ".net.core.rmem_max", &printSysctl);
+  //  LinuxStackHelper::SysctlGet(host[0][0].Get(0), Seconds (0.1),
+  //  ".net.ipv4.tcp_moderate_rcvbuf", &printSysctl);
 
 
   // Containers for useful devices, used to build up the Fat-Tree
@@ -359,7 +359,6 @@ main(int argc, char *argv[])
     }
   }
 
-//TODO: Fix indentation :)
 //=========== Connect aggregate switches to edge switches ===========//
 //
   for (i=0; i<num_pod; i++) {
@@ -387,19 +386,18 @@ main(int argc, char *argv[])
 //=========== Connect core switches to aggregate switches ===========//
 //
 
-	for (i=0; i<num_group; i++){
-		for (j=0; j < num_core; j++){
-			for (h=0; h < num_pod; h++){
-				NetDeviceContainer link1 = csma.Install(NodeContainer(core[i].Get(j), agg[h].Get(i)));
-                aggUplinks[h][i].Add(link1.Get(1));
-                aggDevices[h][i].Add(link1.Get(1));
-
+  for (i=0; i<num_group; i++){
+  	for (j=0; j < num_core; j++){
+  	  for (h=0; h < num_pod; h++){
+        NetDeviceContainer link1 = csma.Install(NodeContainer(core[i].Get(j), agg[h].Get(i)));
+        aggUplinks[h][i].Add(link1.Get(1));
+        aggDevices[h][i].Add(link1.Get(1));
         addr = toString(10, h, 0, 0);
         Ipv4Address ipAddr = Ipv4Address(addr);
         routesCores[i][j][ipAddr.Get()] = link1.Get(0);
-			}
-		}
-	}
+      }
+  	}
+  }
   for (i=0;i<num_pod;i++)
     for (j=0; j<num_agg; j++) {
       Ptr<Node> aggNode = agg[i].Get(j);
@@ -414,28 +412,26 @@ main(int argc, char *argv[])
       ecmpBridge.Install(coreNode, SwitchType::CORE_SWITCH, coreUpLinks[i][j], routesCores[i][j], coreMask, seed++);
     }
 
-
-	//Packet::EnablePrinting ();
-	//Packet::EnableChecking ();
+  //Packet::EnablePrinting ();
+  //Packet::EnableChecking ();
 
   // Populate the ARP Cache. For now every host holds the mappings for all the other hosts.
-  // TODO: This seems ridiculous for a datacenter environment, but seems to be the only solution,
+  // This seems ridiculous for a datacenter environment, but seems to be the only solution,
   // since our switches are L2.
 
-  //std::cout << "NODEIOMAC LENGTH = " << nodeToIpMac.size() << "\n";
   for (int i=0; i < num_pod; i++) {
     for (int j=0; j < num_edge; j++) {
       for (int h=0; h < num_host; h++) {
-		int k=0;
+        int k=0;
 		for (auto item : nodeToIpMac) {
-        	ostringstream ipCommand;
-			std::string nodeIp = item.second.first;
-			std::string nodeMac = item.second.second;
-        	ipCommand << "neigh add " << nodeIp <<
-						 " lladdr " << nodeMac <<
-						 " dev sim0";
-			RunIp(host[i][j].Get(h), Seconds(0.5), ipCommand.str());
-			k++;
+          ostringstream ipCommand;
+          std::string nodeIp = item.second.first;
+          std::string nodeMac = item.second.second;
+          ipCommand << "neigh add " << nodeIp <<
+                    " lladdr " << nodeMac <<
+                    " dev sim0";
+          RunIp(host[i][j].Get(h), Seconds(0.5), ipCommand.str());
+          k++;
 		}
       }
     }
@@ -445,26 +441,20 @@ main(int argc, char *argv[])
   ApplicationContainer apps;
   dce.SetStackSize (1 << 30);
 
-  // TESTING. Simple iperf from host[1][1] to host[2][0]
-  //std::cout << "Starting iperf from " << ipFrom << " to " << ipTo << "\n";
-	for (i=0;i<num_pod;i++) {
-    	for (j=0;j<num_edge;j++) {
-		  	for (h=0;h<num_host; h++) {
-  				dce.SetBinary ("iperf");
-  				dce.ResetArguments();
-				dce.ResetEnvironment();
-				dce.AddArgument ("-s");
-				//dce.AddArgument ("-i");
-				//dce.AddArgument ("-D");
-				//dce.AddArgument ("1");
-				//dce.AddArgument ("--time");
-				//dce.AddArgument (std::to_string(experimentTime));	
-  				apps = dce.Install (host[i][j].Get(h));
-  				apps.Start (Seconds(SERVERS_START_TIME));
-  				apps.Stop (Seconds (simTime));
-			}
-		}
-	}
+  // Start iperf servers on all the hosts.
+  for (i=0;i<num_pod;i++) {
+    for (j=0;j<num_edge;j++) {
+      for (h=0;h<num_host; h++) {
+        dce.SetBinary ("iperf");
+        dce.ResetArguments();
+        dce.ResetEnvironment();
+        dce.AddArgument ("-s");
+        apps = dce.Install (host[i][j].Get(h));
+        apps.Start (Seconds(SERVERS_START_TIME));
+        apps.Stop (Seconds (simTime));
+      }
+    }
+  }
 
 
   //========= Traffic Simulation ===========// 
@@ -509,18 +499,15 @@ main(int argc, char *argv[])
           if (i+j+h != 0) {
             StartFlow(host[i][j].Get(h), host[0][0].Get(0), Seconds(CLIENTS_START_TIME+(i+j+h)*0.0001), flowSize, nodeToIpMac, simTime);
           }
-
         }
       }
 	}
   }
   else if (expType == "test") {
-  //std::cout << "Server ID " << host[0][0].Get(0)->GetId() << "\n";
+    //std::cout << "Server ID " << host[0][0].Get(0)->GetId() << "\n";
 
-  // Test flow
-    //for (int i=0; i<2; i++) {
-      StartFlow(host[0][0].Get(0), host[1][1].Get(1), Seconds(CLIENTS_START_TIME + i*0.01), 1280000, nodeToIpMac, simTime);
-   // }
+    // Test flow
+    StartFlow(host[0][0].Get(0), host[1][1].Get(1), Seconds(CLIENTS_START_TIME + i*0.01), 1280000, nodeToIpMac, simTime);
   }
   else {
     NS_FATAL_ERROR("Unrecognized experiment type!\n");
@@ -528,7 +515,6 @@ main(int argc, char *argv[])
   
   std::cout << "Starting Simulation.. "<<"\n";
   Packet::EnablePrinting();
-  //PrintTime();
   
   // Add Queue Monitor
   //std::cout << "MAX QUEUE SIZE = " << queue->GetMaxPackets() << "\n";
@@ -536,8 +522,12 @@ main(int argc, char *argv[])
 
   Simulator::Stop (Seconds(simTime));
 
-  //Pcap Tracing
-  //csma.EnablePcapAll("fat-tree");
+  // Enable PCAP tracing.
+  // This will output .pcap files for all the interfaces of all the hosts.
+  // Be careful though, as big topologies with large simulation times can result in
+  // a huge amount of space taken up by the .pcap files.
+
+  // csma.EnablePcapAll("fat-tree");
 
   Simulator::Run ();
   std::cout << "Simulation finished "<<"\n";
@@ -557,7 +547,8 @@ main(int argc, char *argv[])
         Ptr<Queue> queue = nd->GetQueue ();
 		droppedPackets += queue->GetTotalDroppedPackets();
         receivedPackets += queue->GetTotalReceivedPackets();
-        queueStatsFile << "EDGE (" << i << " ," << j << ") PORT " << h << ": Recv/Dropped : " << queue->GetTotalDroppedPackets() << "/" << queue->GetTotalReceivedPackets() << "\n";
+        queueStatsFile << "EDGE (" << i << " ," << j << ") PORT " << h << ": Recv/Dropped : "
+                       << queue->GetTotalDroppedPackets() << "/" << queue->GetTotalReceivedPackets() << "\n";
       }
     }
   }
@@ -570,7 +561,8 @@ main(int argc, char *argv[])
         Ptr<Queue> queue = nd->GetQueue ();
 		droppedPackets += queue->GetTotalDroppedPackets();
         receivedPackets += queue->GetTotalReceivedPackets();
-        queueStatsFile << "AGG (" << i << " ," << j << ") PORT " << h << ": Recv/Dropped : " << queue->GetTotalDroppedPackets() << "/" << queue->GetTotalReceivedPackets() << "\n";
+        queueStatsFile << "AGG (" << i << " ," << j << ") PORT " << h << ": Recv/Dropped : "
+                       << queue->GetTotalDroppedPackets() << "/" << queue->GetTotalReceivedPackets() << "\n";
       }
     }
   }
@@ -578,7 +570,6 @@ main(int argc, char *argv[])
   queueStatsFile << "\n\nTOTAL RECEIVED PACKETS = " << receivedPackets << "\n";
   queueStatsFile << "TOTAL DROPPED PACKETS = " << droppedPackets;
   queueStatsFile.close();
-
 
   Simulator::Destroy ();
   NS_LOG_INFO ("Done.");
